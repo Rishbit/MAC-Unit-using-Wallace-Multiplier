@@ -1,12 +1,15 @@
 module accumulator (par_d_in, clk, clr, par_d_out);
-
 	
-	input clk, clr;
-	input [33:0] par_d_in;
+	// Signal "par_d_in" is the parallel input given to the accumulator.
+	// Signal "clk" is the external clock signal given to the accumulator.
+	// Signal "clr" is the external asynchronous reset signal to the accumulator.
+	// Signal "par_d_out" is the parallel output from the accumulator.
+	
+	input  clk, clr;
+	input  [33:0] par_d_in;
 	output [33:0] par_d_out;
 	
-
-	// 34 Bit S/PIPO Register Logic.
+	// 34 Bit PIPO Register Logic.
 	d_flipflop D33 (par_d_in[33], clk, clr, par_d_out[33]);
 	d_flipflop D32 (par_d_in[32], clk, clr, par_d_out[32]);
 	d_flipflop D31 (par_d_in[31], clk, clr, par_d_out[31]);
