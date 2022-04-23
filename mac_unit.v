@@ -5,7 +5,6 @@ module mac_unit(in_data_1, in_data_2, clk, clr, out_data);
 	// Signal "clr" is an external clock signal provided to clear the accumulator registers.
 	// Signal "out_data" is the 34 bit output signal of the MAC Unit.
 	
-	
 	input clr, clk;
 	input [15:0] in_data_1, in_data_2;
 	output [33:0] out_data;
