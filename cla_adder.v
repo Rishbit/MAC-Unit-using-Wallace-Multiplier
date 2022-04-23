@@ -1,26 +1,36 @@
 module cla_adder (A, B, S);	// Carry output won't be generated in this system.
 	
+	// The adder has no scope for accepting external carry signals or generate final carries.
+	// This is due to the knowledge of the fact that no carry is generated anywhere at the interface of any set of blocks.
+	// The inputs to the block are signals A and B.
+	// One of the inputs is 33 bits, while the another is 34 bits.
+	// Hence, a '0' is considered as the 34th bit of the shorter input (Input A in this case).
+	// The output of the system is S (The sum output).
 	
-	input [32:0] A;
-	input [33:0] B;
+	input  [32:0] A;
+	input  [33:0] B;
 	output [33:0] S;
 	
+	// Carry Generate signals.
 	wire G00, G01, G02, G03, G04, G05, G06, G07, G08, G09;
 	wire G10, G11, G12, G13, G14, G15, G16, G17, G18, G19;
 	wire G20, G21, G22, G23, G24, G25, G26, G27, G28, G29;
 	wire G30, G31, G32, G33;
 	
+	// Carry Propagate signals.
 	wire P00, P01, P02, P03, P04, P05, P06, P07, P08, P09;
 	wire P10, P11, P12, P13, P14, P15, P16, P17, P18, P19;
 	wire P20, P21, P22, P23, P24, P25, P26, P27, P28, P29;
 	wire P30, P31, P32, P33;
 	
+	//Carry signals.
 	wire C00, C01, C02, C03, C04, C05, C06, C07, C08, C09;
 	wire C10, C11, C12, C13, C14, C15, C16, C17, C18, C19;
 	wire C20, C21, C22, C23, C24, C25, C26, C27, C28, C29;
 	wire C30, C31, C32, C33, C34;
 	
 	
+	// Calculation of Carry Generate signals.
 	assign G00 = A[0]  & B[0];
 	assign G01 = A[1]  & B[1];
 	assign G02 = A[2]  & B[2];
@@ -57,6 +67,7 @@ module cla_adder (A, B, S);	// Carry output won't be generated in this system.
 	assign G33 = 1'b0  & B[33];
 	
 	
+	// Calculation of Carry Propagate signals.
 	assign P00 = A[0]  ^ B[0];
 	assign P01 = A[1]  ^ B[1];
 	assign P02 = A[2]  ^ B[2];
@@ -93,7 +104,8 @@ module cla_adder (A, B, S);	// Carry output won't be generated in this system.
 	assign P33 = 1'b0  ^ B[33];
 	
 	
-	assign C00 = 1'b0;
+	// Calculation of Carry signals.
+	assign C00 = 1'b0;						// There is no input carry for the system.
 	assign C01 = G00 | (P00 & C00);
 	assign C02 = G01 | (P01 & C01);
 	assign C03 = G02 | (P02 & C02);
@@ -127,10 +139,11 @@ module cla_adder (A, B, S);	// Carry output won't be generated in this system.
 	assign C31 = G30 | (P30 & C30);
 	assign C32 = G31 | (P31 & C31);
 	assign C33 = G32 | (P32 & C32);
-	assign C34 = G33 | (P33 & C33);		//This one is the output carry of the last full adder block in the CLA.
-	// assign C_OUT = C34;
+	assign C34 = G33 | (P33 & C33);					// This signal is the output carry of the last addition in the Adder.
+	// assign C_OUT = C34;						// This ouput is never generated and hence never used.
 	
 	
+	Calculation of Sum signals.
 	assign S[0]  = P00 ^ C00;
 	assign S[1]  = P01 ^ C01;
 	assign S[2]  = P02 ^ C02;
